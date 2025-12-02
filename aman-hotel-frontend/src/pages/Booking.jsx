@@ -1,44 +1,113 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/Booking.css";
+import { useNavigate } from "react-router-dom";
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
-
-export default function Booking() {
-    const query = useQuery();
+export default function BookingPage() {
     const navigate = useNavigate();
-    const roomId = query.get("room") || "";
 
     const [form, setForm] = useState({
-        room_id: roomId,
-        name: "",
-        email: "",
-        check_in: "",
-        check_out: "",
+        checkin: "",
+        checkout: "",
         guests: 1,
+        roomType: "",
     });
 
-    const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const [availability, setAvailability] = useState(null); // null = not checked, true/false = result
 
-    const submit = (e) => {
+    const handleChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+        setAvailability(null); // reset availability if user changes dates/type
+    };
+
+    const checkAvailability = (e) => {
         e.preventDefault();
-        alert("Booking submitted!"); // placeholder
-        navigate("/");
+
+        // ✅ Simulate availability check
+        // You can replace this with a real backend API call
+        const isAvailable = Math.random() > 0.2; // 80% chance room is available
+
+        setAvailability(isAvailable);
+
+        if (!isAvailable) {
+            alert("Sorry, this room is not available for the selected dates.");
+        }
+    };
+
+    const handleBooking = () => {
+        // Redirect to payment page only if available
+        if (availability) {
+            navigate("/payment");
+        }
     };
 
     return (
-        <section className="booking-page container">
-            <h2>Book Room</h2>
-            <form className="booking-form" onSubmit={submit}>
-                <input name="name" placeholder="Full name" value={form.name} onChange={handleChange} required />
-                <input name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-                <input type="date" name="check_in" value={form.check_in} onChange={handleChange} required />
-                <input type="date" name="check_out" value={form.check_out} onChange={handleChange} required />
-                <input type="number" name="guests" min="1" value={form.guests} onChange={handleChange} />
-                <button type="submit">Proceed to Payment</button>
+        <div className="booking-container">
+            <h2>Book Your Room</h2>
+
+            <form className="booking-form" onSubmit={checkAvailability}>
+                <div className="form-group">
+                    <label>Check-In Date</label>
+                    <input
+                        type="date"
+                        name="checkin"
+                        required
+                        value={form.checkin}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Check-Out Date</label>
+                    <input
+                        type="date"
+                        name="checkout"
+                        required
+                        value={form.checkout}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Number of Guests</label>
+                    <input
+                        type="number"
+                        name="guests"
+                        min="1"
+                        max="5"
+                        required
+                        value={form.guests}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Room Type</label>
+                    <select
+                        name="roomType"
+                        required
+                        value={form.roomType}
+                        onChange={handleChange}
+                    >
+                        <option value="">Select Room Type</option>
+                        <option value="single">Single Room</option>
+                        <option value="double">Double Room</option>
+                        <option value="twin">Twin Room</option>
+                        <option value="family">Family Suite</option>
+                        <option value="luxury">Luxury Suite</option>
+                    </select>
+                </div>
+
+                <button type="submit" className="book-btn">
+                    Check Availability
+                </button>
             </form>
-        </section>
+
+            {/* Show Proceed Button Only if Available */}
+            {availability && (
+                <button className="book-btn proceed-btn" onClick={handleBooking}>
+                    Proceed to Payment
+                </button>
+            )}
+        </div>
     );
 }

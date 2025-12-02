@@ -27,6 +27,11 @@ export default function Navbar() {
                     <NavLink to="/contact" onClick={closeMenu}>
                         Contact
                     </NavLink>
+
+                    {/* ✅ SIGN IN BUTTON */}
+                    <Link to="/signin" className="signin-btn" onClick={closeMenu}>
+                        Sign In
+                    </Link>
                 </nav>
 
                 <div
