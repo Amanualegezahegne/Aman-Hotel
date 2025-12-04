@@ -18,17 +18,25 @@ export default function Navbar() {
                     <NavLink to="/" end onClick={closeMenu}>
                         Home
                     </NavLink>
+
                     <NavLink to="/rooms" onClick={closeMenu}>
                         Rooms
                     </NavLink>
+
+                    {/* ✅ Added EVENTS here */}
+                    <NavLink to="/events" onClick={closeMenu}>
+                        Events
+                    </NavLink>
+
                     <NavLink to="/about" onClick={closeMenu}>
                         About
                     </NavLink>
+
                     <NavLink to="/contact" onClick={closeMenu}>
                         Contact
                     </NavLink>
 
-                    {/* ✅ SIGN IN BUTTON */}
+                    {/* SIGN IN BUTTON */}
                     <Link to="/signin" className="signin-btn" onClick={closeMenu}>
                         Sign In
                     </Link>

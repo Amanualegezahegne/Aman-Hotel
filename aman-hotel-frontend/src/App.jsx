@@ -12,12 +12,13 @@ import PaymentPage from "./pages/Payment.jsx";
 import Booking from "./pages/Booking.jsx";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
-
+import Events from "./pages/Event.jsx";   // <-- ADD THIS
 
 export default function App() {
   return (
     <BrowserRouter>
       <Navbar />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/rooms" element={<Rooms />} />
@@ -27,10 +28,11 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/register" element={<Register />} />
-
         <Route path="/payment" element={<PaymentPage />} />
 
+        <Route path="/events" element={<Events />} />   {/* <-- NEW ROUTE */}
       </Routes>
+
       <Footer />
     </BrowserRouter>
   );
